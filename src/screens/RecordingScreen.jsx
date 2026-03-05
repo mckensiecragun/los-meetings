@@ -189,7 +189,21 @@ export default function RecordingScreen({ meeting, seconds, paused, isProcessing
           )
         )}
         {activeTab === "Notes" && (
-          <p className="recording-placeholder">Add notes during the meeting</p>
+          <div className="notes-tab">
+            <div className="notes-action-bar">
+              <button className="notes-action-btn">
+                <span className="material-symbols-rounded" style={{ fontSize: "18px" }}>format_paragraph</span>
+                Type note
+              </button>
+              <button className="notes-action-btn">
+                <span className="material-symbols-rounded" style={{ fontSize: "18px" }}>photo_camera</span>
+                Upload Image
+              </button>
+            </div>
+            <div className="notes-list">
+              <p className="notes-empty">No notes added</p>
+            </div>
+          </div>
         )}
       </div>
 

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { meetingDetails } from "../data/meetingDetails";
 
 const TABS = ["Summary", "Actions", "Transcript", "Notes"];
@@ -248,17 +248,107 @@ function NotesTab({ initialNotes }) {
         ))}
 
         {notes.length === 0 && (
-          <p className="notes-empty">No notes for this meeting.</p>
+          <p className="notes-empty">No notes added</p>
         )}
       </div>
     </div>
   );
 }
 
+// ── Audio playback player ─────────────────────────────────────────────────────
+function parseDurationToSeconds(str) {
+  if (!str) return 0;
+  const h = str.match(/(\d+)h/);
+  const m = str.match(/(\d+)m/);
+  return (h ? parseInt(h[1]) * 3600 : 0) + (m ? parseInt(m[1]) * 60 : 0);
+}
+
+function fmtTime(secs) {
+  const h = Math.floor(secs / 3600);
+  const m = Math.floor((secs % 3600) / 60);
+  const s = Math.floor(secs % 60);
+  if (h > 0) return `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  return `${m}:${String(s).padStart(2, "0")}`;
+}
+
+const SPEEDS = [1, 1.5, 2];
+
+function TranscriptPlayer({ meeting }) {
+  const [playing, setPlaying] = useState(false);
+  const [elapsed, setElapsed] = useState(0);
+  const [speedIdx, setSpeedIdx] = useState(0);
+  const speed = SPEEDS[speedIdx];
+  const total = parseDurationToSeconds(meeting?.duration) || 100;
+  const pct = `${((elapsed / total) * 100).toFixed(1)}%`;
+
+  useEffect(() => {
+    if (!playing) return;
+    const id = setInterval(() => {
+      setElapsed((e) => {
+        if (e >= total) { setPlaying(false); return total; }
+        return e + speed;
+      });
+    }, 1000);
+    return () => clearInterval(id);
+  }, [playing, speed, total]);
+
+  function skip(s) {
+    setElapsed((e) => Math.max(0, Math.min(total, e + s)));
+  }
+
+  return (
+    <div className="transcript-player">
+      <input
+        className="transcript-player-range"
+        style={{ "--pct": pct }}
+        type="range"
+        min={0}
+        max={total}
+        value={elapsed}
+        onChange={(e) => setElapsed(Number(e.target.value))}
+      />
+      <div className="transcript-player-controls">
+        <button className="transcript-player-speed" onClick={() => setSpeedIdx((i) => (i + 1) % SPEEDS.length)}>
+          {speed === 1 ? "1x" : `${speed}x`}
+        </button>
+        <button className="transcript-player-btn" onClick={() => skip(-5)}>
+          <span className="material-symbols-rounded" style={{ fontSize: "26px" }}>replay_5</span>
+        </button>
+        <button className="transcript-player-play" onClick={() => setPlaying((p) => !p)}>
+          <span className="material-symbols-rounded" style={{ fontSize: "24px", color: "#fff" }}>
+            {playing ? "pause" : "play_arrow"}
+          </span>
+        </button>
+        <button className="transcript-player-btn" onClick={() => skip(5)}>
+          <span className="material-symbols-rounded" style={{ fontSize: "26px" }}>forward_5</span>
+        </button>
+        <span className="transcript-player-time">{fmtTime(elapsed)}</span>
+      </div>
+    </div>
+  );
+}
+
 // ── Main screen ──────────────────────────────────────────────────────────────
-export default function PastMeetingScreen({ meeting, onBack }) {
+export default function PastMeetingScreen({ meeting, onBack, onDelete, onEdit }) {
   const [activeTab, setActiveTab] = useState("Summary");
   const [actions, setActions] = useState(["note", "task", "time"]);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    function handleOutsideClick(e) {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("touchstart", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("touchstart", handleOutsideClick);
+    };
+  }, [menuOpen]);
 
   const details = meetingDetails[meeting?.id] || FALLBACK;
 
@@ -274,9 +364,35 @@ export default function PastMeetingScreen({ meeting, onBack }) {
           <span className="material-symbols-rounded" style={{fontSize: "24px"}}>chevron_left</span>
         </button>
         <h1 className="recording-title">{meeting?.title}</h1>
-        <button className="recording-menu">
-          <span className="material-symbols-rounded" style={{fontSize: "22px"}}>more_horiz</span>
-        </button>
+        <div className="recording-menu-wrapper" ref={menuRef}>
+          <button className="recording-menu" onClick={() => setMenuOpen((o) => !o)}>
+            <span className="material-symbols-rounded" style={{fontSize: "22px"}}>more_horiz</span>
+          </button>
+          {menuOpen && (
+            <div className="meeting-dropdown">
+              <button
+                className="meeting-dropdown-item"
+                onClick={() => { setMenuOpen(false); onEdit?.(meeting); }}
+              >
+                <span className="material-symbols-rounded" style={{fontSize: "18px"}}>edit</span>
+                Edit details
+              </button>
+              <div className="meeting-dropdown-divider" />
+              <button className="meeting-dropdown-item meeting-dropdown-item--disabled">
+                <span className="material-symbols-rounded" style={{fontSize: "18px"}}>record_voice_over</span>
+                Assign speakers
+              </button>
+              <div className="meeting-dropdown-divider" />
+              <button
+                className="meeting-dropdown-item meeting-dropdown-item--destructive"
+                onClick={() => { setMenuOpen(false); onDelete?.(meeting?.id); }}
+              >
+                <span className="material-symbols-rounded" style={{fontSize: "18px"}}>delete</span>
+                Delete meeting
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Meta */}
@@ -349,6 +465,8 @@ export default function PastMeetingScreen({ meeting, onBack }) {
 
         {activeTab === "Notes" && <NotesTab key={meeting?.id} initialNotes={details.notes} />}
       </div>
+
+      {activeTab === "Transcript" && <TranscriptPlayer meeting={meeting} />}
     </div>
   );
 }

@@ -14,7 +14,7 @@ function HighlightedText({ text, query }) {
   );
 }
 
-export default function SearchScreen({ savedMeetings = [], onCancel, onMeetingView }) {
+export default function SearchScreen({ savedMeetings = [], deletedMeetingIds = new Set(), onCancel, onMeetingView }) {
   const [query, setQuery] = useState("");
   const inputRef = useRef(null);
 
@@ -22,7 +22,7 @@ export default function SearchScreen({ savedMeetings = [], onCancel, onMeetingVi
     setTimeout(() => inputRef.current?.focus(), 50);
   }, []);
 
-  const allMeetings = [...savedMeetings, ...staticMeetings];
+  const allMeetings = [...savedMeetings, ...staticMeetings.filter((m) => !deletedMeetingIds.has(m.id))];
 
   const results = query.trim()
     ? allMeetings.filter(

@@ -4,9 +4,12 @@ export default function NewMeetingSheet({
   visible,
   onClose,
   onRecord,
+  onSave,
   selectedProject,
   onProjectFieldClick,
   onClearProject,
+  mode = "new",
+  initialName = "",
 }) {
   const [meetingName, setMeetingName] = useState("");
   const [animating, setAnimating] = useState(false);
@@ -67,6 +70,7 @@ export default function NewMeetingSheet({
 
   useEffect(() => {
     if (visible) {
+      if (mode === "edit") setMeetingName(initialName);
       setRendered(true);
       requestAnimationFrame(() =>
         requestAnimationFrame(() => {
@@ -111,7 +115,7 @@ export default function NewMeetingSheet({
 
         {/* Header */}
         <div className="sheet-header">
-          <span className="sheet-title">New Meeting</span>
+          <span className="sheet-title">{mode === "edit" ? "Edit Meeting" : "New Meeting"}</span>
         </div>
         <div className="sheet-divider" />
 
@@ -173,10 +177,16 @@ export default function NewMeetingSheet({
 
         {/* Action buttons */}
         <div className="sheet-actions">
-          <button className="btn-record" onClick={() => onRecord?.(meetingName)}>
-            <span className="material-symbols-rounded" style={{fontSize: "20px"}}>mic</span>
-            Record
-          </button>
+          {mode === "edit" ? (
+            <button className="btn-record" onClick={() => onSave?.(meetingName)}>
+              Save
+            </button>
+          ) : (
+            <button className="btn-record" onClick={() => onRecord?.(meetingName)}>
+              <span className="material-symbols-rounded" style={{fontSize: "20px"}}>mic</span>
+              Record
+            </button>
+          )}
           <button className="btn-cancel" onClick={onClose}>
             Cancel
           </button>

@@ -832,6 +832,59 @@
   flex-shrink: 0;
 }
 
+/* ── 3-dot dropdown menu ─────────────────────────────── */
+.recording-menu-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.meeting-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  width: 210px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.14), 0 0 0 0.5px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  z-index: 50;
+}
+
+.meeting-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 13px 16px;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 400;
+  color: #1c1c1e;
+  text-align: left;
+  cursor: pointer;
+}
+
+.meeting-dropdown-item:hover {
+  background: #f2f2f7;
+}
+
+.meeting-dropdown-item--destructive {
+  color: #e03131;
+}
+
+.meeting-dropdown-item--disabled {
+  color: #8e8e93;
+  cursor: default;
+}
+
+.meeting-dropdown-divider {
+  height: 1px;
+  background: #e5e5ea;
+  margin: 0;
+}
+
 .recording-meta {
   padding: 4px 20px 14px;
   display: flex;
@@ -1256,6 +1309,95 @@
   color: #1c1c1e;
   line-height: 1.5;
   margin: 0;
+}
+
+/* ── Transcript audio player ──────────────────────────────── */
+.transcript-player {
+  flex-shrink: 0;
+  background: #fff;
+  border-top: 0.5px solid #e5e5ea;
+  padding: 12px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.transcript-player-range {
+  --pct: 0%;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(to right, #1c1c1e var(--pct), #d1d1d6 var(--pct));
+  outline: none;
+  cursor: pointer;
+}
+
+.transcript-player-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #1c1c1e;
+  cursor: pointer;
+}
+
+.transcript-player-range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #1c1c1e;
+  border: none;
+  cursor: pointer;
+}
+
+.transcript-player-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.transcript-player-speed {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1c1c1e;
+  background: none;
+  border: none;
+  cursor: pointer;
+  min-width: 28px;
+  text-align: center;
+  padding: 0;
+}
+
+.transcript-player-btn {
+  background: none;
+  border: none;
+  color: #1c1c1e;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+}
+
+.transcript-player-play {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #1c1c1e;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.transcript-player-time {
+  font-size: 13px;
+  color: #8e8e93;
+  min-width: 40px;
+  text-align: right;
 }
 
 /* ── Transcribing row (spinner + label) ───────────────────── */

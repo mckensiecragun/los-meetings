@@ -23,6 +23,8 @@ export default function App() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [savedMeetings, setSavedMeetings] = useState([]);
   const [viewingMeeting, setViewingMeeting] = useState(null);
+  const [deletedMeetingIds, setDeletedMeetingIds] = useState(new Set());
+  const [editingMeeting, setEditingMeeting] = useState(null);
 
   // Timer runs whenever there's an active meeting, not paused, and not processing
   useEffect(() => {
@@ -117,6 +119,46 @@ export default function App() {
     setCurrentScreen("pastMeeting");
   }
 
+  function handleDeleteMeeting(id) {
+    const isStatic = staticMeetings.some((m) => m.id === id);
+    if (isStatic) {
+      setDeletedMeetingIds((prev) => new Set([...prev, id]));
+    } else {
+      setSavedMeetings((prev) => prev.filter((m) => m.id !== id));
+    }
+    setViewingMeeting(null);
+    setCurrentScreen("home");
+  }
+
+  function handleOpenEditMeeting(meeting) {
+    setSelectedProject(meeting.project ?? null);
+    setEditingMeeting(meeting);
+  }
+
+  function handleEditMeetingClose() {
+    setEditingMeeting(null);
+    setSelectedProject(null);
+  }
+
+  function handleSaveMeeting(newName) {
+    const updatedName = newName.trim() || editingMeeting.title;
+    const updatedProject = selectedProject;
+    setSavedMeetings((prev) =>
+      prev.map((m) =>
+        m.id === editingMeeting.id
+          ? { ...m, title: updatedName, case: updatedProject?.name ?? m.case }
+          : m
+      )
+    );
+    setViewingMeeting((prev) => ({
+      ...prev,
+      title: updatedName,
+      case: updatedProject?.name ?? prev.case,
+      project: updatedProject,
+    }));
+    handleEditMeetingClose();
+  }
+
   return (
     <div className="phone-frame">
       <div className="phone-screen">
@@ -125,6 +167,7 @@ export default function App() {
         ) : currentScreen === "search" ? (
           <SearchScreen
             savedMeetings={savedMeetings}
+            deletedMeetingIds={deletedMeetingIds}
             onCancel={() => setCurrentScreen("home")}
             onMeetingView={(id) => { handleMeetingView(id); }}
           />
@@ -134,6 +177,8 @@ export default function App() {
           <PastMeetingScreen
             meeting={viewingMeeting}
             onBack={() => { setCurrentScreen("home"); setViewingMeeting(null); }}
+            onDelete={handleDeleteMeeting}
+            onEdit={handleOpenEditMeeting}
           />
         ) : currentScreen === "recording" ? (
           <RecordingScreen
@@ -156,6 +201,7 @@ export default function App() {
                 paused={paused}
                 isProcessing={isProcessing}
                 savedMeetings={savedMeetings}
+                deletedMeetingIds={deletedMeetingIds}
                 onActiveMeetingClick={() => setCurrentScreen("recording")}
                 onMeetingView={handleMeetingView}
                 onSearchClick={() => setCurrentScreen("search")}
@@ -187,22 +233,26 @@ export default function App() {
               }}
             />
 
-            <NewMeetingSheet
-              visible={showNewMeeting}
-              onClose={handleNewMeetingClose}
-              onRecord={handleRecord}
-              selectedProject={selectedProject}
-              onProjectFieldClick={() => setShowProjectPicker(true)}
-              onClearProject={() => setSelectedProject(null)}
-            />
-
-            <ProjectPickerSheet
-              visible={showProjectPicker}
-              onClose={() => setShowProjectPicker(false)}
-              onSelect={handleProjectSelect}
-            />
           </>
         )}
+
+        <NewMeetingSheet
+          visible={showNewMeeting || editingMeeting !== null}
+          mode={editingMeeting ? "edit" : "new"}
+          initialName={editingMeeting?.title ?? ""}
+          onClose={editingMeeting ? handleEditMeetingClose : handleNewMeetingClose}
+          onRecord={handleRecord}
+          onSave={handleSaveMeeting}
+          selectedProject={selectedProject}
+          onProjectFieldClick={() => setShowProjectPicker(true)}
+          onClearProject={() => setSelectedProject(null)}
+        />
+
+        <ProjectPickerSheet
+          visible={showProjectPicker}
+          onClose={() => setShowProjectPicker(false)}
+          onSelect={handleProjectSelect}
+        />
       </div>
     </div>
   );

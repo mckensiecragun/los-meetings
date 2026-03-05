@@ -8,7 +8,7 @@ function formatTime(totalSeconds) {
   return `${h}:${m}:${s}`;
 }
 
-export default function HomeScreen({ activeMeeting, seconds, paused, isProcessing, savedMeetings = [], onActiveMeetingClick, onMeetingView, onSearchClick, onNotebookClick }) {
+export default function HomeScreen({ activeMeeting, seconds, paused, isProcessing, savedMeetings = [], deletedMeetingIds = new Set(), onActiveMeetingClick, onMeetingView, onSearchClick, onNotebookClick }) {
   return (
     <div className="screen-content">
       <header className="home-header">
@@ -55,7 +55,7 @@ export default function HomeScreen({ activeMeeting, seconds, paused, isProcessin
           <MeetingCard key={meeting.id} meeting={meeting} onClick={() => onMeetingView(meeting.id)} />
         ))}
 
-        {meetings.map((meeting) => (
+        {meetings.filter((m) => !deletedMeetingIds.has(m.id)).map((meeting) => (
           <MeetingCard key={meeting.id} meeting={meeting} onClick={() => onMeetingView(meeting.id)} />
         ))}
       </div>
