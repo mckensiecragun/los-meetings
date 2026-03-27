@@ -30,18 +30,20 @@ function NoteCard({ onDismiss }) {
           <span className="material-symbols-rounded" style={{fontSize: "14px"}}>description</span>
           Note
         </span>
-        <button className="action-dismiss" onClick={onDismiss}>
-          <span className="material-symbols-rounded" style={{fontSize: "16px"}}>close</span>
-        </button>
+        <div className="action-header-icons">
+          <button className="action-icon-btn">
+            <span className="material-symbols-rounded" style={{fontSize: "20px"}}>edit</span>
+          </button>
+          <button className="action-icon-btn" onClick={onDismiss}>
+            <span className="material-symbols-rounded" style={{fontSize: "20px"}}>delete</span>
+          </button>
+        </div>
       </div>
       <p className="action-card-body">
         <span className="action-label">Subject:</span> Settlement Negotiation meeting outcome
       </p>
       <p className="action-card-text">No agreement reached. All discussions were for settlement purposes only.</p>
       <div className="action-card-footer">
-        <button className="action-edit-btn">
-          <span className="material-symbols-rounded" style={{fontSize: "16px"}}>edit</span>
-        </button>
         <button className="action-publish-btn">Publish</button>
       </div>
     </div>
@@ -60,9 +62,14 @@ function TaskCard({ onDismiss }) {
           <span className="material-symbols-rounded" style={{fontSize: "14px"}}>person</span>
           Megan Smith
         </span>
-        <button className="action-dismiss" onClick={onDismiss}>
-          <span className="material-symbols-rounded" style={{fontSize: "16px"}}>close</span>
-        </button>
+        <div className="action-header-icons">
+          <button className="action-icon-btn">
+            <span className="material-symbols-rounded" style={{fontSize: "20px"}}>edit</span>
+          </button>
+          <button className="action-icon-btn" onClick={onDismiss}>
+            <span className="material-symbols-rounded" style={{fontSize: "20px"}}>delete</span>
+          </button>
+        </div>
       </div>
       <p className="action-card-text action-card-text--large">Follow up with client</p>
       <div className="action-due-row">
@@ -71,9 +78,6 @@ function TaskCard({ onDismiss }) {
         <span className="action-due-date">2/10/2026</span>
       </div>
       <div className="action-card-footer">
-        <button className="action-edit-btn">
-          <span className="material-symbols-rounded" style={{fontSize: "16px"}}>edit</span>
-        </button>
         <button className="action-publish-btn">Publish</button>
       </div>
     </div>
@@ -95,9 +99,14 @@ function TimeEntryCard({ onDismiss }) {
           <span className="material-symbols-rounded" style={{fontSize: "14px"}}>person</span>
           Megan Smith
         </span>
-        <button className="action-dismiss" onClick={onDismiss}>
-          <span className="material-symbols-rounded" style={{fontSize: "16px"}}>close</span>
-        </button>
+        <div className="action-header-icons">
+          <button className="action-icon-btn">
+            <span className="material-symbols-rounded" style={{fontSize: "20px"}}>edit</span>
+          </button>
+          <button className="action-icon-btn" onClick={onDismiss}>
+            <span className="material-symbols-rounded" style={{fontSize: "20px"}}>delete</span>
+          </button>
+        </div>
       </div>
 
       {/* Hours / Rate / Time code */}
@@ -127,9 +136,6 @@ function TimeEntryCard({ onDismiss }) {
           </button>
         </div>
         <div className="action-card-footer">
-          <button className="action-edit-btn action-edit-btn--square">
-            <span className="material-symbols-rounded" style={{fontSize: "16px"}}>edit</span>
-          </button>
           <button className="action-publish-btn">Publish</button>
         </div>
       </div>

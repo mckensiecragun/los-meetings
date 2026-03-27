@@ -25,6 +25,7 @@ export default function App() {
   const [viewingMeeting, setViewingMeeting] = useState(null);
   const [deletedMeetingIds, setDeletedMeetingIds] = useState(new Set());
   const [editingMeeting, setEditingMeeting] = useState(null);
+  const [darkMode, setDarkMode] = useState(false);
 
   // Timer runs whenever there's an active meeting, not paused, and not processing
   useEffect(() => {
@@ -32,6 +33,19 @@ export default function App() {
     const id = setInterval(() => setSeconds((s) => s + 1), 1000);
     return () => clearInterval(id);
   }, [activeMeeting, paused, isProcessing]);
+
+  // Toggle gradient background class on body for home and profile screens
+  useEffect(() => {
+    const isGradientScreen = currentScreen === 'home' || currentScreen === 'profile' || currentScreen === 'search';
+    document.body.classList.toggle('gradient-bg', isGradientScreen);
+    return () => document.body.classList.remove('gradient-bg');
+  }, [currentScreen]);
+
+  // Toggle dark mode class on body
+  useEffect(() => {
+    document.body.classList.toggle('dark-mode', darkMode);
+    return () => document.body.classList.remove('dark-mode');
+  }, [darkMode]);
 
   // Tracks the pending 30-second processing timeout so it can be cancelled
   const processingTimerRef = useRef(null);
@@ -193,7 +207,11 @@ export default function App() {
         ) : (
           <>
             {currentScreen === "profile" ? (
-              <ProfileScreen onSmartpenClick={() => setCurrentScreen("smartpen")} />
+              <ProfileScreen
+                onSmartpenClick={() => setCurrentScreen("smartpen")}
+                darkMode={darkMode}
+                onToggleDarkMode={() => setDarkMode(d => !d)}
+              />
             ) : (
               <HomeScreen
                 activeMeeting={activeMeeting}
@@ -206,6 +224,7 @@ export default function App() {
                 onMeetingView={handleMeetingView}
                 onSearchClick={() => setCurrentScreen("search")}
                 onNotebookClick={() => setCurrentScreen("notebook")}
+                darkMode={darkMode}
               />
             )}
             <BottomNav

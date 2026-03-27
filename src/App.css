@@ -1,3 +1,12 @@
+/* ── Hide scrollbars globally ────────────────────────────── */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, WebKit */
+}
+
 /* ── Material Symbols ─────────────────────────────────────── */
 .material-symbols-rounded {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -38,11 +47,28 @@
   overflow: hidden;
 }
 
+body.gradient-bg .phone-frame {
+  background: linear-gradient(
+    168deg,
+    rgba(254, 188, 189, 0.20) 0%,
+    rgba(251, 196, 147, 0.20) 14.07%,
+    rgba(232, 208, 158, 0.20) 36.46%,
+    rgba(161, 172, 235, 0.20) 61.81%
+  ), #fff;
+}
+
+body.gradient-bg .profile-screen {
+  background: transparent;
+}
+
 /* ── On a real device: fill the full screen ───────────────── */
 @media (max-width: 500px) {
   body {
-    background: #f2f2f7;
+    background-color: #f2f2f7;
     display: block;
+  }
+  body.gradient-bg {
+    background-color: transparent;
   }
   .phone-frame {
     width: 100vw;
@@ -82,7 +108,7 @@
 .icon-btn {
   width: 38px;
   height: 38px;
-  border-radius: 50%;
+  border-radius: 12px;
   background: #ffffff;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12), 0 0 0 0.5px rgba(0, 0, 0, 0.06);
   display: flex;
@@ -107,7 +133,7 @@
 /* ── Meeting card ─────────────────────────────────────────── */
 .meeting-card {
   background: #fff;
-  border-radius: 14px;
+  border-radius: 8px;
   padding: 16px;
   cursor: pointer;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12), 0 0 0 0.5px rgba(0, 0, 0, 0.06);
@@ -197,7 +223,7 @@
 }
 
 .nav-btn--active {
-  color: #3b5bdb;
+  color: #161616;
 }
 
 .nav-btn--plus {
@@ -801,7 +827,7 @@
 .recording-header {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 2px;
   padding: 52px 16px 4px;
 }
 
@@ -1590,6 +1616,24 @@
   align-items: center;
 }
 
+.action-header-icons {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.action-icon-btn {
+  background: none;
+  border: none;
+  padding: 4px;
+  color: #6e6e73;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .action-badge {
   display: inline-flex;
   align-items: center;
@@ -1809,6 +1853,10 @@
   flex-direction: column;
   background: #f2f2f7;
   overflow: hidden;
+}
+
+body.gradient-bg .search-screen {
+  background: transparent;
 }
 
 .search-bar-row {
@@ -2265,8 +2313,8 @@
 }
 
 .profile-avatar {
-  width: 72px;
-  height: 72px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   background: #d1d1d6;
   display: flex;
@@ -2399,4 +2447,384 @@
 .profile-toggle .toggle-thumb {
   position: relative;
   z-index: 0;
+}
+
+/* ── Theme segmented control ────────────────────────────────── */
+.theme-segmented {
+  display: flex;
+  width: 100%;
+  background: #f2f2f7;
+  border-radius: 8px;
+  padding: 3px;
+  gap: 3px;
+}
+
+.theme-segment {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #8e8e93;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.theme-segment--active {
+  background: #fff;
+  color: #1c1c1e;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+
+/* ── Dark mode ──────────────────────────────────────────────── */
+body.dark-mode .phone-frame {
+  background: #3D3D3D;
+}
+
+body.dark-mode.gradient-bg .phone-frame {
+  background: linear-gradient(159deg, rgba(176, 88, 104, 0.08) 3.44%, rgba(176, 101, 64, 0.08) 16.04%, rgba(122, 96, 48, 0.08) 36.11%, rgba(74, 88, 184, 0.08) 58.81%), #3D3D3D;
+}
+
+body.dark-mode .phone-frame::after {
+  box-shadow: 0 0 0 600px #2d2d2d;
+}
+
+/* Meeting cards */
+body.dark-mode .meeting-card {
+  background: #3D3D3D;
+  border: 1px solid #5B5B5B;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), 0 0 0 0.5px rgba(255, 255, 255, 0.04);
+}
+
+body.dark-mode .meeting-card:hover {
+  background: #484848;
+}
+
+body.dark-mode .meeting-title {
+  color: #FFFFFF;
+}
+
+body.dark-mode .meeting-case {
+  color: #C6C6C6;
+}
+
+body.dark-mode .meeting-date,
+body.dark-mode .meeting-duration {
+  color: #8D8D8D;
+}
+
+body.dark-mode .meta-separator {
+  color: #5B5B5B;
+}
+
+body.dark-mode .suggested-actions-text {
+  color: #78A9FF;
+}
+
+body.dark-mode .activity-dot {
+  background: #78A9FF;
+}
+
+/* Home header */
+body.dark-mode .home-header {
+  background: transparent;
+}
+
+body.dark-mode .icon-btn {
+  background: #3D3D3D;
+  color: #C6C6C6;
+  border: 1px solid #5B5B5B;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), 0 0 0 0.5px rgba(255, 255, 255, 0.04);
+}
+
+body.dark-mode .icon-btn:hover {
+  background: #3A3A3A;
+}
+
+/* Bottom nav */
+body.dark-mode .bottom-nav {
+  background: #3D3D3D;
+  border-top-color: #5B5B5B;
+}
+
+body.dark-mode .nav-btn {
+  color: #8D8D8D;
+}
+
+body.dark-mode .nav-btn--active {
+  color: #FFFFFF;
+}
+
+body.dark-mode .nav-btn--plus {
+  background: #5B5B5B;
+  color: #FFFFFF;
+  box-shadow: none;
+}
+
+/* Profile screen */
+body.dark-mode .profile-screen {
+  background: #3D3D3D;
+}
+
+body.dark-mode.gradient-bg .profile-screen {
+  background: transparent;
+}
+
+body.dark-mode .profile-card {
+  background: #3D3D3D;
+  border: 1px solid #5B5B5B;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), 0 0 0 0.5px rgba(255, 255, 255, 0.04);
+}
+
+body.dark-mode .profile-section-title {
+  color: #FFFFFF;
+}
+
+body.dark-mode .profile-section-subtitle {
+  color: #C6C6C6;
+}
+
+body.dark-mode .profile-row-label {
+  color: #FFFFFF;
+}
+
+body.dark-mode .profile-row-sublabel {
+  color: #C6C6C6;
+}
+
+body.dark-mode .profile-name {
+  color: #FFFFFF;
+}
+
+body.dark-mode .profile-username {
+  color: #C6C6C6;
+}
+
+body.dark-mode .profile-divider {
+  background: #5B5B5B;
+}
+
+body.dark-mode .profile-row-chevron {
+  color: #8D8D8D;
+}
+
+body.dark-mode .profile-row-icon {
+  color: #C6C6C6;
+}
+
+/* Theme segmented control in dark mode */
+body.dark-mode .theme-segmented {
+  background: #2D2D2D;
+}
+
+body.dark-mode .theme-segment {
+  color: #8D8D8D;
+}
+
+body.dark-mode .theme-segment--active {
+  background: #5B5B5B;
+  color: #FFFFFF;
+  box-shadow: none;
+}
+
+/* Search screen in dark mode */
+body.dark-mode .search-bar {
+  background: #5B5B5B;
+  border-color: #5B5B5B;
+}
+
+body.dark-mode .search-bar-input {
+  color: #FFFFFF;
+}
+
+body.dark-mode .search-bar-input::placeholder {
+  color: #8D8D8D;
+}
+
+body.dark-mode .search-bar-icon {
+  color: #8D8D8D;
+}
+
+body.dark-mode .search-cancel-btn {
+  color: #78A9FF;
+}
+
+body.dark-mode .search-highlight {
+  background: rgba(120, 169, 255, 0.3);
+  color: #78A9FF;
+}
+
+/* ── Dark mode: Meeting details screen ──────────────────────── */
+body.dark-mode .recording-screen {
+  background: #3D3D3D;
+}
+
+body.dark-mode .recording-title {
+  color: #FFFFFF;
+}
+
+body.dark-mode .recording-back,
+body.dark-mode .recording-menu {
+  color: #FFFFFF;
+}
+
+body.dark-mode .recording-project {
+  color: #C6C6C6;
+}
+
+body.dark-mode .past-meeting-date {
+  color: #8D8D8D;
+}
+
+/* Tabs */
+body.dark-mode .recording-tab {
+  color: #8D8D8D;
+}
+
+body.dark-mode .recording-tab--active {
+  color: #FFFFFF;
+}
+
+body.dark-mode .recording-tab--active::after {
+  background: #FFFFFF;
+}
+
+body.dark-mode .recording-tab-line {
+  background: #5B5B5B;
+}
+
+/* Summary tab */
+body.dark-mode .summary-heading {
+  color: #FFFFFF;
+}
+
+body.dark-mode .summary-bullet {
+  color: #C6C6C6;
+}
+
+/* Actions tab */
+body.dark-mode .action-new-btn {
+  background: #3D3D3D;
+  border-color: #5B5B5B;
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), 0 0 0 0.5px rgba(255, 255, 255, 0.04);
+}
+
+body.dark-mode .action-card {
+  background: #3D3D3D;
+  border-color: #5B5B5B;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), 0 0 0 0.5px rgba(255, 255, 255, 0.04);
+}
+
+body.dark-mode .action-card-body,
+body.dark-mode .action-card-text {
+  color: #C6C6C6;
+}
+
+body.dark-mode .action-label,
+body.dark-mode .action-meta-label {
+  color: #FFFFFF;
+}
+
+body.dark-mode .action-due-label,
+body.dark-mode .action-due-date {
+  color: #C6C6C6;
+}
+
+body.dark-mode .action-due-row .material-symbols-rounded {
+  color: #8D8D8D;
+}
+
+body.dark-mode .action-icon-btn {
+  color: #8D8D8D;
+}
+
+body.dark-mode .action-publish-btn {
+  background: #FFFFFF;
+  color: #1c1c1e;
+}
+
+/* Dropdown menu */
+body.dark-mode .meeting-dropdown {
+  background: #2D2D2D;
+  border: 1px solid #5B5B5B;
+}
+
+body.dark-mode .meeting-dropdown-item {
+  color: #FFFFFF;
+}
+
+body.dark-mode .meeting-dropdown-divider {
+  background: #5B5B5B;
+}
+
+/* Transcript */
+body.dark-mode .transcript-speaker-bubble {
+  background: #5B5B5B;
+  color: #FFFFFF;
+}
+
+body.dark-mode .transcript-speaker-name {
+  color: #FFFFFF;
+}
+
+body.dark-mode .transcript-time {
+  color: #8D8D8D;
+}
+
+body.dark-mode .transcript-text {
+  color: #C6C6C6;
+}
+
+/* ── Dark mode: Notes tab ───────────────────────────────────── */
+body.dark-mode .note-card {
+  background: #3D3D3D;
+  border: 1px solid #5B5B5B;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), 0 0 0 0.5px rgba(255, 255, 255, 0.04);
+}
+
+body.dark-mode .note-text {
+  color: #C6C6C6;
+}
+
+body.dark-mode .note-time {
+  color: #8D8D8D;
+}
+
+body.dark-mode .note-icon-btn {
+  color: #8D8D8D;
+}
+
+body.dark-mode .notes-empty {
+  color: #8D8D8D;
+}
+
+body.dark-mode .notes-action-btn {
+  color: #C6C6C6;
+  border-color: #5B5B5B;
+}
+
+body.dark-mode .note-compose {
+  background: #3D3D3D;
+  border: 1px solid #5B5B5B;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .note-compose-input {
+  background: #3D3D3D;
+  color: #FFFFFF;
+}
+
+body.dark-mode .note-compose-cancel {
+  color: #8D8D8D;
+}
+
+body.dark-mode .note-compose-save {
+  color: #78A9FF;
 }

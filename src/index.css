@@ -5,10 +5,10 @@
 }
 
 :root {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #e5e5ea;
+  background-color: #fff;
 }
 
 body {
@@ -16,7 +16,33 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #e5e5ea;
+  background-color: #fff;
+}
+
+body.gradient-bg {
+  background-color: transparent;
+}
+
+body.gradient-bg::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    168deg,
+    rgba(254, 188, 189, 0.20) 0%,
+    rgba(251, 196, 147, 0.20) 14.07%,
+    rgba(232, 208, 158, 0.20) 36.46%,
+    rgba(161, 172, 235, 0.20) 61.81%
+  ), #fff;
+}
+
+body.dark-mode {
+  background-color: #3D3D3D;
+}
+
+body.dark-mode.gradient-bg::before {
+  background: linear-gradient(159deg, rgba(176, 88, 104, 0.08) 3.44%, rgba(176, 101, 64, 0.08) 16.04%, rgba(122, 96, 48, 0.08) 36.11%, rgba(74, 88, 184, 0.08) 58.81%), #3D3D3D;
 }
 
 button {

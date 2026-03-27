@@ -8,11 +8,11 @@ function formatTime(totalSeconds) {
   return `${h}:${m}:${s}`;
 }
 
-export default function HomeScreen({ activeMeeting, seconds, paused, isProcessing, savedMeetings = [], deletedMeetingIds = new Set(), onActiveMeetingClick, onMeetingView, onSearchClick, onNotebookClick }) {
+export default function HomeScreen({ activeMeeting, seconds, paused, isProcessing, savedMeetings = [], deletedMeetingIds = new Set(), onActiveMeetingClick, onMeetingView, onSearchClick, onNotebookClick, darkMode }) {
   return (
     <div className="screen-content">
       <header className="home-header">
-        <h1 className="app-title">LO\S for Meetings</h1>
+        <img src={darkMode ? "/lois-for-meetings-white.svg" : "/lois-for-meetings-black.svg"} alt="LO\S for Meetings" style={{ height: "22px", width: "auto" }} />
         <div className="header-actions">
           <button className="icon-btn" onClick={onSearchClick}>
             <span className="material-symbols-rounded" style={{fontSize: "22px"}}>search</span>

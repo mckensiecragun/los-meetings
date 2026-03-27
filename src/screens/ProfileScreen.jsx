@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function ProfileScreen({ onSmartpenClick }) {
+export default function ProfileScreen({ onSmartpenClick, darkMode, onToggleDarkMode }) {
   const [meetingProcessed, setMeetingProcessed] = useState(true);
   const [notesEnabled, setNotesEnabled] = useState(true);
   const [tasksEnabled, setTasksEnabled] = useState(true);
@@ -11,10 +11,34 @@ export default function ProfileScreen({ onSmartpenClick }) {
       {/* Avatar + name */}
       <div className="profile-header">
         <div className="profile-avatar">
-          <span className="material-symbols-rounded" style={{fontSize: "48px", color: "#b0b0b5"}}>person</span>
+          <img src="/Avatar.svg" alt="Profile" style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
         </div>
         <h2 className="profile-name">Alice Johnson</h2>
         <p className="profile-username">@product.filevineapp.com</p>
+      </div>
+
+      {/* Theme */}
+      <div className="profile-card">
+        <h3 className="profile-section-title">Theme</h3>
+        <div className="profile-divider" />
+        <div className="profile-row">
+          <div className="theme-segmented">
+            <button
+              className={`theme-segment${!darkMode ? " theme-segment--active" : ""}`}
+              onClick={() => darkMode && onToggleDarkMode()}
+            >
+              <span className="material-symbols-rounded" style={{ fontSize: "16px" }}>light_mode</span>
+              Light
+            </button>
+            <button
+              className={`theme-segment${darkMode ? " theme-segment--active" : ""}`}
+              onClick={() => !darkMode && onToggleDarkMode()}
+            >
+              <span className="material-symbols-rounded" style={{ fontSize: "16px" }}>dark_mode</span>
+              Dark
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Filevine Smartpen */}
