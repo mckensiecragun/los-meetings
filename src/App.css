@@ -281,10 +281,10 @@ body.gradient-bg .profile-screen {
 .active-recording-card {
   width: 100%;
   background: #fff;
-  border-radius: 16px;
+  border-radius: 8px;
   padding: 16px;
   text-align: left;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12), 0 0 0 0.5px rgba(0, 0, 0, 0.06);
   cursor: pointer;
   border: none;
   font-family: inherit;
@@ -2827,4 +2827,106 @@ body.dark-mode .note-compose-cancel {
 
 body.dark-mode .note-compose-save {
   color: #78A9FF;
+}
+
+/* ── Dark mode: New Meeting bottom sheet ────────────────────── */
+body.dark-mode .sheet-panel {
+  background: #3D3D3D;
+}
+
+body.dark-mode .sheet-drag-handle {
+  background: #5B5B5B;
+}
+
+body.dark-mode .sheet-title {
+  color: #FFFFFF;
+}
+
+body.dark-mode .sheet-divider {
+  background: #3A3A3A;
+}
+
+body.dark-mode .sheet-close-btn {
+  color: #8D8D8D;
+}
+
+body.dark-mode .field-label {
+  color: #8D8D8D;
+}
+
+body.dark-mode .field-input {
+  background: #2C2C2E;
+  border-color: #5B5B5B;
+  color: #FFFFFF;
+}
+
+body.dark-mode .field-input::placeholder {
+  color: #5B5B5B;
+}
+
+body.dark-mode .field-input:focus,
+body.dark-mode .field-input--focused {
+  border-color: #78A9FF;
+}
+
+body.dark-mode .search-field {
+  background: #2C2C2E;
+  border-color: #5B5B5B;
+}
+
+body.dark-mode .search-field:focus-within {
+  border-color: #78A9FF;
+}
+
+body.dark-mode .search-icon {
+  color: #5B5B5B;
+}
+
+body.dark-mode .search-input {
+  color: #FFFFFF;
+}
+
+body.dark-mode .search-input::placeholder {
+  color: #5B5B5B;
+}
+
+body.dark-mode .btn-record {
+  background: #FFFFFF;
+  color: #1C1C1E;
+}
+
+body.dark-mode .btn-record:hover {
+  background: #E5E5E5;
+}
+
+body.dark-mode .btn-cancel {
+  color: #FFFFFF;
+}
+
+/* ── Dark mode: Active recording card ───────────────────────── */
+body.dark-mode .active-recording-card {
+  background: #3D3D3D;
+  border: 1px solid #5B5B5B;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), 0 0 0 0.5px rgba(255, 255, 255, 0.04);
+}
+
+body.dark-mode .active-recording-card:active {
+  background: #484848;
+}
+
+body.dark-mode .active-recording-title {
+  color: #FFFFFF;
+}
+
+body.dark-mode .active-recording-project {
+  color: #C6C6C6;
+}
+
+body.dark-mode .active-recording-label {
+  color: #8D8D8D;
+}
+
+body.dark-mode .active-recording-sep,
+body.dark-mode .active-recording-timer {
+  color: #8D8D8D;
 }
